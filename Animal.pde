@@ -1,88 +1,95 @@
-class Animal {
-  /*
-  Fields
-  */
-  private color bodyColor;
-  private color eyeColor;
+/**
+* This class represents the basic functionality that an Animal in Object Zoo
+* should have. The animal class is abstract, and so must be overriden.This
+* class, however, contains methods for controlling the size and x and y location
+* of an Animal as well as causing the Animal to walk around and remain on the screen.
+*
+* Note that this class (nor its sub-classes) cannot be instantiated without first
+* calling the function {@code setDim(x,y)} and specifying the sketch dimmensions
+* in which the class will be deployed.
+*
+*
+* @author J. Hammer
+* @version 1.0.0
+*/
+public abstract class Animal {
   private int xLoc;
   private int yLoc;
+  private int size;
+  private double trajX;
+  private double trajY;
+  private static int height = -1;
+  private static int width = -1;
+
+  /**
+  * Constructs a new Animal object at a given location and size.
+  * Before constructing an Animal, you must call setDim() and
+  * specify the dimmensions of the sketch.
+  */
+  public Animal(int x, int y, int size) {
+    if (this.height < 0 || this.width < 0) {
+     throw new IllegalArgumentException("Sketch width and height must be set > 0 before instantiation!"); 
+    }
+    this.xLoc = x;
+    this.yLoc = y;
+    this.size = size;
+    this.trajX = Math.random() * 10 - 5;
+    this.trajY = Math.random() * 10 - 5;
+  }
   
-  public Animal(color bc, color ec, int x, int y) {
-    this.bodyColor = bc;
-    this.eyeColor = ec;
+  /**
+  * Create an animal of base size in the top left corner.
+  */
+  public Animal() {
+      this(0,0,1);
+  }
+  
+  /**
+  * Set the dimmension of the sketch in which the Animal class is being deployed.
+  */
+  public static void setDim(int w, int h) {
+    width = w;
+    height = h;
+  }
+
+  /**
+  * Move the Animal to the specified coordinate.
+  */
+  public final void move(int x, int y) {
     this.xLoc = x;
     this.yLoc = y;
   }
+
+  /**
+  * Overriden by the extending class! 
+  * Draws the object to the Processing Canvas.
+  */
+  public abstract void draw();
+
+
   
-  public void draw() {
-    fill(bodyColor); //neck
-    rect(xLoc -26, yLoc -134, 50, 50);
+  /**
+  * Advance the Animal along its trajectory. If it hits a wall, turn around.
+  */
+  public final void walk() {
+    this.move((int)(xLoc + trajX), (int)(yLoc + trajY));
     
-   fill(bodyColor); //legs 
-   rect(xLoc +20, yLoc +70, 40, 70);
-   
-    fill(bodyColor); 
-   rect(xLoc -60, yLoc +70, 40, 70);
-   
-    fill(bodyColor); // ears
-   ellipse(xLoc -40, yLoc -180, 45, 45);
-   
-    fill(bodyColor); 
-   ellipse(xLoc +40, yLoc -180, 45, 45);
-   
-    fill(eyeColor); 
-   ellipse(xLoc -40, yLoc -180, 30, 30);
-   
-    fill(eyeColor); 
-   ellipse(xLoc +40, yLoc -180, 30, 30);
-   
-   fill(bodyColor); // head
-   ellipse(xLoc , yLoc -150, 110, 100);
-   
-   
-   
-    fill(eyeColor); // eyes 
-   ellipse(xLoc-23, yLoc-156, 34, 30);
-   
-    fill(eyeColor); 
-   ellipse(xLoc+23, yLoc-156, 34, 30);
- 
-     fill(bodyColor); // eyes-pupil
-   ellipse(xLoc -20, yLoc -156, 18, 18);
-   
-    fill(bodyColor); 
-   ellipse(xLoc +20, yLoc -156, 18, 18);
-   
-     fill(eyeColor); // eyeball
-   ellipse(xLoc -20, yLoc -156, 4, 4);
- 
-    fill(eyeColor); 
-   ellipse(xLoc +20, yLoc -156, 4, 4);
-   
-   //body
-   fill(bodyColor); 
-   ellipse(xLoc, yLoc+2.5, 176, 190);
-  
-   fill(eyeColor);
-   ellipse(xLoc, yLoc+2.5, 136, 150);
-   
-   //Arms
-   fill(bodyColor);
-   rect(xLoc+65,yLoc-55,100,40);
-   
-    fill(bodyColor);
-   rect(xLoc-65,yLoc-55,-100,40);//235
-   
-   
+    if (xLoc < 0 || xLoc > width) trajX *= -1;
+    if (yLoc < 0 || yLoc > height) trajY *= -1; 
+  }
+
+  /** The Y location of the Animal */
+  public final int getY() {
+    return yLoc;
   }
   
-
-  void move(int x, int y) {
-    this.xLoc = x;
-    this.yLoc = y;
+  /** The X location of the Animal */
+  public int getX() {
+    return xLoc;
   }
   
-  
-
-   
+  /** The size of the Animal */
+  public final int getSize() {
+    return size;
+  }
 }

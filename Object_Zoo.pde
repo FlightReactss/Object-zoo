@@ -2,7 +2,7 @@ Animal x;
 void setup() {
   size(600,600);
   
-  x = new Animal(color(255,255,255), color(10, 10, 10), 150, 150);
+  x = new Panda(color(255,255,255), color(10, 10, 10), 150, 150);
   
 }
 
